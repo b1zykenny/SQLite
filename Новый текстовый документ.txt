@@ -1,0 +1,20 @@
+1) SELECT
+number AS number_stream,
+name AS course_name,
+started_at AS start_date
+FROM courses, streams;
+
+2)SELECT
+name AS course_name,
+SUM(students_ammount) AS sum_students
+FROM courses LEFT JOIN streams
+ON courses.id = streams.course_id
+WHERE students_ammount GROUP BY course_id;
+
+3)SELECT
+id AS id_teacher,
+name ||'_'|| surname AS teacher,
+AVG(grade) AS avg_grade
+FROM teachers LEFT JOIN grades
+ON teachers.id = grades.teacher_id
+GROUP BY teachers.id;
