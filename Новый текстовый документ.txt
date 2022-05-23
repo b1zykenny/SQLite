@@ -1,0 +1,28 @@
+1) CREATE VIEW courses_info AS
+SELECT
+name AS course_name,
+MAX(streams.number) AS max_number,
+MAX(streams.started_at) AS max_started,
+AVG(grades.grade) AS AVG_grade
+FROM streams
+LEFT JOIN grades
+ON grades.stream_id = streams.id
+LEFT JOIN courses
+ON courses.id = streams.course_id;
+
+2)BEGIN TRANSACTION;
+DELETE FROM grades WHERE teacher_id = 3;
+DELETE FROM courses WHERE id = 3;
+DELETE FROM teachers WHERE id = 3;
+COMMIT;
+
+3)CREATE TRIGGER check_grade BEFORE INSERT
+ON grades
+BEGIN
+SELECT CASE
+WHEN
+(NEW.grade NOT BETWEEN 1 AND 5)
+THEN
+RAISE(ABORT, 'Not wrong grade! Grade must to be between 1 and 5')
+END;
+END;
