@@ -1,0 +1,21 @@
+1)SELECT DISTINCT
+name AS course_name,
+SUM(streams.students_ammount) OVER(w_students) AS sum_students
+FROM streams
+LEFT JOIN courses
+ON streams.course_id = courses.id
+WINDOW  w_students AS (PARTITION BY courses.name);
+
+2)SELECT DISTINCT
+teachers.id AS teacher_id,
+teachers.name AS teacher_name,
+teachers.surname AS teacher_surname,
+AVG(grades.grade) OVER(w_grades) AS avg_grade
+FROM teachers
+LEFT JOIN grades
+ON teachers.id = grades.teacher_id
+WINDOW w_grades AS (PARTITION BY teacher_id);
+
+3)CREATE INDEX teachers_surname_name_idx ON teachers(surname, name);
+CREATE INDEX streams_number_idx ON streams(number);
+
